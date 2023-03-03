@@ -1,0 +1,31 @@
+version: '3'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - JENKINS_ADMIN_ID=admin
+      - JENKINS_ADMIN_PASSWORD=admin
+    restart: always
+    command: /usr/local/bin/jenkins.sh
+
+  python-job:
+    image: python:3.9
+    container_name: python-job
+    command: python my_python_script.py
+    volumes:
+      - ./my_python_script.py:/app/my_python_script.py
+    depends_on:
+      - jenkins
+    restart: always
+
+volumes:
+  jenkins_home:
+
