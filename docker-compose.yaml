@@ -9,6 +9,7 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
+      - ${PWD}/Jenkinsfile:/var/jenkins_home/Jenkinsfile
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
       - JENKINS_ADMIN_ID=admin
@@ -19,9 +20,9 @@ services:
   python-job:
     image: python:3.9
     container_name: python-job
-    command: python my_python_script.py
+    command: python /app/my_python_script.py
     volumes:
-      - ./my_python_script.py:/app/my_python_script.py
+      - ${PWD}/my_python_script.py:/app/my_python_script.py
     depends_on:
       - jenkins
     restart: always
