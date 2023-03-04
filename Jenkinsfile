@@ -4,10 +4,12 @@ pipeline {
         stage('Run Python job') {
             steps {
 		sh '''
-                   python /app/my_python_script.py
+                  python3 /var/jenkins_home/workspace/webhook_auroralabs/main.py 
 		   '''
             }
         }
     }
 }
+
+
 
